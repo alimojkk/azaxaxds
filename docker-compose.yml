@@ -1,0 +1,43 @@
+# =========================================================
+#  VibeNest deployment file
+#  Build pack: docker-compose   |   Compose file: /docker-compose.yml
+#  Public service: app          |   Internal port: 8080
+# =========================================================
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    environment:
+      # پورت داخلی سرویس — با internal port در VibeNest یکی است
+      PORT: "8080"
+      HOST: "0.0.0.0"
+      NODE_ENV: "production"
+      # مسیر داده دائمی
+      DATA_DIR: "/data"
+      # آدرس عمومی سرویس؛ VibeNest این مقدار را خودکار پر می‌کند.
+      # اگر خالی بماند، پنل دامنه را از هدرهای درخواست تشخیص می‌دهد.
+      APP_URL: "${APP_URL:-}"
+      PUBLIC_DOMAIN: "${PUBLIC_DOMAIN:-}"
+      # حساب مالک پنل؛ ADMIN_PASSWORD را VibeNest به‌صورت امن تولید می‌کند.
+      ADMIN_USERNAME: "${ADMIN_USERNAME:-admin}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-}"
+      # نسخه هسته Xray (در صورت نیاز قابل تغییر)
+      XRAY_VERSION: "${XRAY_VERSION:-v26.9.9}"
+    volumes:
+      - panel_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:8080/health >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  panel_data:

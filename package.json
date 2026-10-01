@@ -1,0 +1,24 @@
+{
+  "name": "x-ui-ali",
+  "version": "1.0.0",
+  "description": "پنل مدیریت کانفیگ VLESS/VMess/Trojan مبتنی بر Xray-core — آماده دیپلوی یک‌کلیکی روی VibeNest",
+  "private": true,
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "health": "node -e \"fetch('http://127.0.0.1:'+(process.env.PORT||8080)+'/health').then(r=>r.json()).then(o=>console.log(o))\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "qrcode": "^1.5.3"
+  }
+}
